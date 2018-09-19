@@ -24,7 +24,7 @@ We will continue working on the application that was developed throughout __Prac
 Start off by creating a fork of the random-number-generator repository and then clone it.
 
 ```
-git clone git@github.com:poenneby/random-number-generator.git
+git clone https://<your_username>@bitbucket.mycloud.intranatixis.com/scm/fk7/random-number-generator.git
 ```
 
 Let's look at the history of this project
@@ -55,7 +55,6 @@ Let's try merging the branch `feature-3`
 ```
 git merge origin/feature-3
 ```
-You will be asked for a commit message in your configured `EDITOR`
 
 It merged ok using a recursive strategy - but we got ourself a merge commit which does not make much sense or add value
 
@@ -198,6 +197,7 @@ You will get conflicts for each previously squashed commit but you can safely sk
 
 ```
 git rebase --skip
+git rebase --skip
 ```
 
 While we are still in branch `feature-4` we rebase it interactively to again squash the refactoring commit
@@ -219,7 +219,7 @@ git lol
 * 6e98149 Generating simple greeting
 ```
 
-Now that the indidual feature branches are clean we rebase them with the `master` branch
+Now that the individual feature branches are clean we rebase them with the `master` branch
 
 ```
 git checkout feature-3
@@ -247,6 +247,7 @@ We resolve the conflict by using the feature branch code
 
 ```
 git checkout --theirs generator.sh
+git add .
 git rebase --continue
 ```
 
@@ -306,6 +307,7 @@ ba63cd0 HEAD@{6}: checkout: moving from master to feature-4
 
 In our case we identify the SHA1 that correspond with the merge of feature-3 and feature-4 and `cherry-pick` these
 
+For example:
 ```
 > git cherry-pick 89f42f9
 > git cherry-pick 16fe226
