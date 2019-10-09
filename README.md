@@ -332,9 +332,73 @@ And our history has been restored
 
 ### Find the buggy commit using bisect
 
+git bisect is a tool that allows you to find an offending commit.
+
+You give it the SHA1 of a commit where the bug is and another commit where the bug was not present.
+
+Git will now narrow down the number of commits to check and thus helping you find the offending commit faster.
+
+All you have to do is tell Git whether the commit is `good` or `bad` until the offending commit has been found.
+
+Let's try this out in our previous repository example. 
+In our case we want to find the commit that started writing files to an `out` directory.
+
+First we start the `bisect` session:
+
+```
+git bisect start
+```
+
+Then we give it the `sha1` of a good commit, where the directory was not yet generated.
+
+```
+git bisect good 6e98149
+```
+
+And then the `sha1` or reference to the commit that we know the directory. For the exercise let's say the latest commit referenced by HEAD.
+
+```
+git bisect bad HEAD
+```
+With this information Git will narrow down the next commit to check.
+
+We can visualise our bisect progress by listing the commits:
+
+```
+git lol
+
+* 18fa162 (HEAD) Generating files to out directory * b1cae93 Generating random numbers to file * 6e98149 (refs/bisect/good-6e98149c015338fae004300250a66cbea5e508a0) Generating simple greeting
+```
+We see the commit that we have marked as `good` and the current position of HEAD
+
+By observing the file (and the commit message gives it away) we have found a bad commit which we mark as `bad`
+
+```
+git bisect bad
+```
+This continues the process and the next commit found is `good`, the file is not written to a directory.
+
+```
+git bisect good
+```
+
+The bisect session has completed when the offending commit has been found:
+
+```
+18fa16272b5ef081424e02d1b68b51864d9888e0 is the first bad commit
+commit 18fa16272b5ef081424e02d1b68b51864d9888e0
+Author: Peter Onneby <ponneby@xebia.fr>
+Date:   Wed Jun 27 00:08:02 2018 +0200
+
+    Generating files to out directory
+
+:100755 100755 4117bd7990a25c4510de615acd196d679298b90c 0c5ceabde4cd96d37cd37c7240cd976937a5993d M     generator.sh
+```
+
+Finally we `reset` to normal Git mode with `git bisect reset`
+
+### Automatic bisect
+
 #### TODO
-
-
-
 
 
