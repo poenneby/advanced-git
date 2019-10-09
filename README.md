@@ -399,6 +399,41 @@ Finally we `reset` to normal Git mode with `git bisect reset`
 
 ### Automatic bisect
 
-#### TODO
+When you have a large number of suspect commits it is impractical to manual check each commit.
+
+Git bisect allow you to `run` a script to automate this.
+
+Put the following code in a file called `test.sh`.
+
+```shell
+#!/bin/bash
+
+# Run the generator
+./generator.sh
+
+# And if the `out` directory exist
+if [ -d "out" ]; then
+  rm -rf out
+  # Indicate failure == bad commit
+  exit 1
+fi
+# Otherwise all is good
+exit 0
+```
+And make it executable:
+
+```
+chmod 744 test.sh
+```
+
+We can now automate the process using the above script.
+
+```
+git bisect start HEAD 6e98149  # Short hand for starting a bisect
+
+git bisect run ./test.sh
+```
+
+The test script will run for each step of the bisect process and automatically find the offending commit.
 
 
